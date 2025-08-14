@@ -36,9 +36,7 @@ function Layout() {
 export default function App() {
     return (
         <ThemeProvider>
-            
                 <Layout />
-            
         </ThemeProvider>
     );
 }
