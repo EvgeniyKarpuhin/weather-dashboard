@@ -15,17 +15,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     );
 
     useEffect(() => {
-        if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        localStorage.setItem("theme", theme);
     }, [theme]);
+    //     if (theme === "dark") {
+    //         document.documentElement.classList.add("dark");
+    //     } else {
+    //         document.documentElement.classList.remove("dark");
+    //     }
+    // }, [theme]);
 
     const toggleTheme = () => {
-        const newTheme = theme === "light" ? "dark" : "light";
-        setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
+        setTheme((prev) => (prev === "light" ? "dark" : "light"));
+        // const newTheme = theme === "light" ? "dark" : "light";
+        // setTheme(newTheme);
+        // localStorage.setItem("theme", newTheme);
     };
 
     return (
