@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface Props {
-    onSearch: (city: string) => void;
+    onSearch: (city: string) => void | Promise<void>;
 }
 
 export default function SearchBar({ onSearch }: Props) {
@@ -16,16 +16,16 @@ export default function SearchBar({ onSearch }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="mb-3 flex gap-2">
             <input 
                 type="text" 
                 value={city} 
                 onChange={(e) => setCity(e.target.value)} 
-                placeholder="Enter city" 
+                placeholder="Введите город" 
                 className="border p-2 rounded"
             />
             <button type="submit" className="bg-blue-500 text-white px-4 rounded">
-                Search
+                Найти
             </button>
         </form>
     );
