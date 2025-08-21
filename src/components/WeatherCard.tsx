@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 interface WeatherCardProps {
     data: any;
@@ -26,9 +26,9 @@ export default function WeatherCard({ data }: WeatherCardProps) {
         bgColor = "bg-red-500";
     }
     return (
-        <div className={`${bgColor} text-white rounded-2x1 shadow-lg p-6 w-80 text-center`}>
-            <h2 className="text-2x1 font-bold mb-2">{data.name}</h2>
-            <p className="text-5x1 font-extrabold mb-2">{temp}°C</p>
+        <div className={`${bgColor} text-white rounded-2xl shadow-lg p-6 w-80 text-center`}>
+            <h2 className="text-2xl font-bold mb-2">{data.name}</h2>
+            <p className="text-5xl font-extrabold mb-2">{temp}°C</p>
             <p className="capitalize text-lg">{description}</p>
         </div>
     );
