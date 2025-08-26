@@ -12,8 +12,8 @@ interface ForecastItem {
 }
 
 export default function Forecast() {
-  const [forecast, setForecast] = useState<ForecastItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [forecast, setForecast] = useState<Record<string, ForecastItem[]>>({});
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [city, setCity] = useState("Киев");
   const [query, setQuery] = useState("");
@@ -22,26 +22,37 @@ export default function Forecast() {
 
   useEffect(() => {
     async function fetchForecast() {
-      setLoading(true);
-      setError("");
       try {
+        setLoading(true);
+        setError("");
         const res = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}&lang=ru`
         );
         if (!res.ok) throw new Error("Ошибка прогноза погоды");
         const data = await res.json();
 
-        const today = new Date().getDate();
+        const groups: Record<string, ForecastItem[]> = {};
 
-        const filtered = data.list.filter((item: ForecastItem) => {
-            const tomorrow = new Date(item.dt_txt).getDate();
-            return tomorrow > today;
-        })
+        data.list.forEach((item: ForecastItem) => {
+            const date = new Date(item.dt_txt);
 
-        setForecast(filtered);
+            const dateKey = date.toLocaleDateString("ru-RU", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+            });
+
+        const today = new Date();
+        if(date.getDate() === today.getDate()) return;
+        if(!groups[dateKey]) groups[dateKey] = [];
+        groups[dateKey].push(item);
+    });
+
+    const limited = Object.fromEntries(Object.entries(groups).slice(0, 3));
+
+    setForecast(limited);
       } catch (e: any) {
         setError(e.message);
-        setForecast([]);
       } finally {
         setLoading(false);
       }
@@ -51,22 +62,10 @@ export default function Forecast() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setCity(query.trim());
+    if(query.trim()) {;
+        setCity(query.trim());
+    }
   };
-
-  const groupedForecast: Record<string, ForecastItem[]> = forecast.reduce(
-    (groups, item) => {
-      const date = new Date(item.dt_txt).toLocaleDateString("ru-RU", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-      });
-      if (!groups[date]) groups[date] = [];
-      groups[date].push(item);
-      return groups;
-    },
-    {} as Record<string, ForecastItem[]>
-  );
 
   if (loading) return <p>Загрузка прогноза погоды...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -74,7 +73,7 @@ export default function Forecast() {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">
-        Прогноз погоды {city} на 5 дней
+        Прогноз погоды {city} на 3 дня
       </h2>
       <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
         <input
@@ -91,18 +90,18 @@ export default function Forecast() {
           Показать погоду
         </button>
       </form>
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {Object.entries(groupedForecast).map(([date, items]) => (
+      <div className="md:grid-cols-3 gap-4">
+        {Object.entries(forecast).map(([date, items]) => (
           <div key={date} className="bg-gray-100 p-2 rounded shadow flex flex-col">
-            <h3 className="text-center font-bold mb-2">{date}</h3>
-            <div className="flex flex-col gap-2">
+            <h3 className="text-center font-bold mb-3">{date}</h3>
+            <div className="flex flex-row gap-2 overflow-x-auto justify-between">
               {items.map((item) => (
                 <div
                   key={item.dt_txt}
-                  className="bg-white p-2 rounded shadow text-center"
+                  className="bg-white p-2 rounded shadow text-center w-[200px]"
                 >
                   <p className="font-medium">
-                    {new Date(item.dt_txt).toLocaleDateString("ru-RU", {
+                    {new Date(item.dt_txt).toLocaleTimeString("ru-RU", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}

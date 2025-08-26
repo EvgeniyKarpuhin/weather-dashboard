@@ -10,7 +10,7 @@ export default function App() {
                 <header className="p-4 flex justify-between items-center bg-blue-500 dark:bg-blue-700"> 
                     <nav className="flex gap-4"> 
                         <Link to="/">Погода сейчас</Link> 
-                        <Link to="/forecast">Погода на ближайшие 5 дней</Link> 
+                        <Link to="/forecast">Погода на ближайшие 3 дня</Link> 
                     </nav> 
                 </header> 
                 <main className="p-4"> 
