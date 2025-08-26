@@ -19,7 +19,6 @@ export default function Forecast() {
     const [query, setQuery] = useState("");
 
     const API_KEY = "a059085e330fce68f911321b65962676";
-    // const CITY = "Киев";
 
     useEffect(() => {
         async function fetchForecast() {
@@ -29,9 +28,6 @@ export default function Forecast() {
                 const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}&lang=ru`);
                 if (!res.ok) throw new Error("Ошибка прогноза погоды");
                 const data = await res.json();
-
-                // const daily = data.list.filter((item: ForecastItem) => 
-                // item.dt_txt.includes("12:00:00"));
 
                 setForecast(data.list);
             } catch (e: any) {
