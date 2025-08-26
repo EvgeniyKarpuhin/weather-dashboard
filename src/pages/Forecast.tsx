@@ -92,15 +92,17 @@ export default function Forecast() {
       </form>
       <div className="md:grid-cols-3 gap-4">
         {Object.entries(forecast).map(([date, items]) => (
-          <div key={date} className="bg-gray-100 p-2 rounded shadow flex flex-col">
-            <h3 className="text-center font-bold mb-3">{date}</h3>
-            <div className="flex flex-row gap-2 overflow-x-auto justify-between">
+          <div key={date} className="bg-gray-100 p-3 rounded shadow flex flex-col">
+            <h3 className="ml-8 font-bold mb-3">{date}</h3>
+            <div className="flex flex-row gap-2 justify-around">
               {items.map((item) => (
                 <div
                   key={item.dt_txt}
-                  className="bg-white p-2 rounded shadow text-center w-[200px]"
+                  className="bg-gradient-to-br from-blue-100 to-blue-200 
+                            p-4 rounded-2xl shadow-lg w-[200px]
+                            text-center transition-transform hover:scale-105"
                 >
-                  <p className="font-medium">
+                  <p className="font-semibold text-gray-700">
                     {new Date(item.dt_txt).toLocaleTimeString("ru-RU", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -109,12 +111,12 @@ export default function Forecast() {
                   <img
                     src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                     alt={item.weather[0].description}
-                    className="mx-auto"
+                    className="mx-auto w-16 h-16"
                   />
-                  <p className="text-lg">
+                  <p className="text-lg font-bold text-gray-900">
                     {Math.round(item.main.temp)}°C
                   </p>
-                  <p className="capitalize text-sm">{item.weather[0].description}</p>
+                  <p className="capitalize text-sm text-gray-600">{item.weather[0].description}</p>
                 </div>
               ))}
             </div>
