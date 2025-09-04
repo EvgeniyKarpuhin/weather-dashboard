@@ -24,7 +24,7 @@ export default function SearchBar({ onSearch }: Props) {
                 placeholder="Введите город" 
                 className="border p-2 rounded"
             />
-            <button type="submit" className="bg-blue-500 text-white px-4 rounded">
+            <button type="submit" className="bg-blue-500 text-white px-4 rounded cursor-pointer">
                 Найти
             </button>
         </form>
