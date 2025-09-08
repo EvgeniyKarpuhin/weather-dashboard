@@ -16,7 +16,7 @@ export default function SearchBar({ onSearch }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mb-3 flex gap-2">
+        <form onSubmit={handleSubmit} className="mt-15 mb-3 flex gap-2">
             <input 
                 type="text" 
                 value={city} 
